@@ -4,7 +4,17 @@ import { UserRepository } from "../UserRepository";
 
 export class PrismaUserRepository implements UserRepository {
   async create(data: Prisma.UserCreateInput): Promise<User> {
-    const user = await prisma.user.create({ data });
+    const user = await prisma.$transaction(async (transaction) => {
+      const user = await transaction.user.create({ data });
+
+      await transaction.userPreference.create({
+        data: {
+          userId: user.email,
+        },
+      });
+
+      return user;
+    });
 
     return user;
   }
