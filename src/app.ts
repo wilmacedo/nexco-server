@@ -1,6 +1,7 @@
 import cors from "cors";
 import express, { Response } from "express";
 import "express-async-errors";
+import { companyTypeRouter } from "./http/controllers/companyType/routes";
 import { interestsRouter } from "./http/controllers/interests/routes";
 import { usersRouter } from "./http/controllers/users/routes";
 import { errorHandling } from "./utils/error";
@@ -14,6 +15,7 @@ app.use(express.json({ limit: "5mb" }));
 
 app.use("/", usersRouter);
 app.use("/", interestsRouter);
+app.use("/", companyTypeRouter);
 
 app.use("/health", (_, response: Response) => {
   return response.status(200).json({ status: "ok" });
