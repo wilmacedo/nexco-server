@@ -23,10 +23,13 @@ export async function removeInterests(request: Request, response: Response) {
   } catch (error) {
     if (
       error instanceof InterestNotFoundError ||
-      error instanceof UserNotFoundError ||
-      error instanceof UserDontHaveInterestsError
+      error instanceof UserNotFoundError
     ) {
-      response.status(404).json({ message: error.message });
+      return response.status(404).json({ message: error.message });
+    }
+
+    if (error instanceof UserDontHaveInterestsError) {
+      return response.status(409).json({ message: error.message });
     }
 
     throw error;

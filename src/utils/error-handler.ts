@@ -2,7 +2,7 @@ import { env } from "@/env";
 import { NextFunction, Request, Response } from "express";
 import { ZodError } from "zod";
 
-export function errorHandling(
+export function errorHandler(
   error: Error,
   _: Request,
   response: Response,
