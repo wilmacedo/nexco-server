@@ -1,0 +1,120 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table users {
+  email String [unique, not null]
+  name String [not null]
+  image String
+  password String
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Notification notifications [not null]
+  UserInterest user_interests [not null]
+  UserCompanyType user_company_types [not null]
+  Preferences user_preferences [not null]
+}
+
+Table user_preferences {
+  id String [pk]
+  communication Boolean [not null, default: true]
+  social Boolean [not null, default: true]
+  userId String [not null]
+  user users [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table interests {
+  id String [pk]
+  name String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  UserInterest user_interests [not null]
+  CompanyInterests company_interests [not null]
+}
+
+Table company_types {
+  id String [pk]
+  name String [not null]
+  description String [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+  Company companies [not null]
+  UserCompanyType user_company_types [not null]
+}
+
+Table user_interests {
+  id String [pk]
+  userId String [not null]
+  user users [not null]
+  interestId String [not null]
+  interest interests [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table user_company_types {
+  id String [pk]
+  userId String [not null]
+  user users [not null]
+  companyTypeId String [not null]
+  companyType company_types [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table notifications {
+  id String [pk]
+  title String [not null]
+  description String [not null]
+  read Boolean [not null, default: false]
+  archived Boolean [not null, default: false]
+  userId String [not null]
+  user users [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table companies {
+  id String [pk]
+  name String [not null]
+  image String
+  description String [not null]
+  city String [not null]
+  website String [not null]
+  companyTypeId String [not null]
+  companyType company_types [not null]
+  interestId String [not null]
+  CompanyInterests company_interests [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Table company_interests {
+  id String [pk]
+  companyId String [not null]
+  company companies [not null]
+  interestId String [not null]
+  interest interests [not null]
+  createdAt DateTime [default: `now()`, not null]
+  updatedAt DateTime [not null]
+}
+
+Ref: user_preferences.userId > users.email
+
+Ref: user_interests.userId > users.email
+
+Ref: user_interests.interestId > interests.id
+
+Ref: user_company_types.userId > users.email
+
+Ref: user_company_types.companyTypeId > company_types.id
+
+Ref: notifications.userId > users.email
+
+Ref: companies.companyTypeId > company_types.id
+
+Ref: company_interests.companyId > companies.id
+
+Ref: company_interests.interestId > interests.id

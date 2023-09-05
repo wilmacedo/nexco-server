@@ -1,0 +1,155 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  email    String  @unique
+  name     String
+  image    String?
+  password String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Notification    Notification[]
+  UserInterest    UserInterest[]
+  UserCompanyType UserCompanyType[]
+  Preferences     UserPreference[]
+
+  @@map("users")
+}
+
+model UserPreference {
+  id String @id @default(uuid())
+
+  communication Boolean @default(true)
+  social        Boolean @default(true)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [email])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_preferences")
+}
+
+model Interest {
+  id   String @id @default(uuid())
+  name String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  UserInterest     UserInterest[]
+  CompanyInterests CompanyInterests[]
+
+  @@map("interests")
+}
+
+model CompanyType {
+  id          String @id @default(uuid())
+  name        String
+  description String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  Company         Company[]
+  UserCompanyType UserCompanyType[]
+
+  @@map("company_types")
+}
+
+model UserInterest {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [email])
+
+  interestId String
+  interest   Interest @relation(fields: [interestId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_interests")
+}
+
+model UserCompanyType {
+  id String @id @default(uuid())
+
+  userId String
+  user   User   @relation(fields: [userId], references: [email])
+
+  companyTypeId String
+  companyType   CompanyType @relation(fields: [companyTypeId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("user_company_types")
+}
+
+model Notification {
+  id          String  @id @default(uuid())
+  title       String
+  description String
+  read        Boolean @default(false)
+  archived    Boolean @default(false)
+
+  userId String
+  user   User   @relation(fields: [userId], references: [email])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("notifications")
+}
+
+model Company {
+  id          String  @id @default(uuid())
+  name        String
+  image       String?
+  description String
+  city        String
+  website     String
+
+  companyTypeId String
+  companyType   CompanyType @relation(fields: [companyTypeId], references: [id])
+
+  interestId       String
+  CompanyInterests CompanyInterests[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("companies")
+}
+
+model CompanyInterests {
+  id String @id @default(uuid())
+
+  companyId String
+  company   Company @relation(fields: [companyId], references: [id])
+
+  interestId String
+  interest   Interest @relation(fields: [interestId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("company_interests")
+}
