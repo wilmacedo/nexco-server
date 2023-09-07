@@ -38,7 +38,7 @@ model UserPreference {
   communication Boolean @default(true)
   social        Boolean @default(true)
 
-  userId String
+  userId String @unique
   user   User   @relation(fields: [userId], references: [email])
 
   createdAt DateTime @default(now())

@@ -1,6 +1,7 @@
 import { Router } from "express";
 import { addCompanyType } from "./add-company-type";
 import { addInterests } from "./add-interests";
+import { preferences } from "./preferences";
 import { register } from "./register";
 import { removeCompanyTypes } from "./remove-company-type";
 import { removeInterests } from "./remove-interests";
@@ -14,3 +15,5 @@ usersRouter.delete("/users/interests", removeInterests);
 
 usersRouter.post("/users/company-types", addCompanyType);
 usersRouter.delete("/users/company-types", removeCompanyTypes);
+
+usersRouter.post("/users/preferences", preferences);
