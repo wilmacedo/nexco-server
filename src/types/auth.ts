@@ -1,4 +1,5 @@
 import { Request } from "express";
+import { z } from "zod";
 
 export interface AuthPayload {
   name: string;
@@ -8,3 +9,7 @@ export interface AuthPayload {
 export interface AuthRequest extends Request {
   user?: AuthPayload;
 }
+
+export const userAuthSchema = z.object({
+  email: z.string().email(),
+});

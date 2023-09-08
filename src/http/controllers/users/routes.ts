@@ -12,11 +12,11 @@ export const usersRouter = Router();
 
 usersRouter.post("/users", register);
 
-usersRouter.post("/users/interests", addInterests);
-usersRouter.delete("/users/interests", removeInterests);
+usersRouter.post("/users/interests", verifyJwt, addInterests);
+usersRouter.delete("/users/interests", verifyJwt, removeInterests);
 
-usersRouter.post("/users/company-types", addCompanyType);
-usersRouter.delete("/users/company-types", removeCompanyTypes);
+usersRouter.post("/users/company-types", verifyJwt, addCompanyType);
+usersRouter.delete("/users/company-types", verifyJwt, removeCompanyTypes);
 
 usersRouter.get("/users/preferences", verifyJwt, preferences);
-usersRouter.put("/users/preferences", updatePreferences);
+usersRouter.put("/users/preferences", verifyJwt, updatePreferences);

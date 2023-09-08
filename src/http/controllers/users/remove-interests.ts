@@ -1,17 +1,21 @@
+import { AuthRequest, userAuthSchema } from "@/types/auth";
 import { InterestNotFoundError } from "@/use-cases/errors/interest-not-found-error";
 import { UserDontHaveInterestsError } from "@/use-cases/errors/user-dont-have-interests-error";
 import { UserNotFoundError } from "@/use-cases/errors/user-not-found-error";
 import { makeRemoveInterestsCase } from "@/use-cases/factories/user/make-remove-interests";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { z } from "zod";
 
-export async function removeInterests(request: Request, response: Response) {
+export async function removeInterests(
+  request: AuthRequest,
+  response: Response
+) {
   const bodySchema = z.object({
-    userEmail: z.string().email(),
     interestIds: z.array(z.string()),
   });
 
-  const { userEmail, interestIds } = bodySchema.parse(request.body);
+  const { interestIds } = bodySchema.parse(request.body);
+  const { email: userEmail } = userAuthSchema.parse(request.user);
 
   try {
     const removeInterestsCase = makeRemoveInterestsCase();
