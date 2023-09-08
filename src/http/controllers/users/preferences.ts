@@ -1,21 +1,22 @@
+import { AuthRequest } from "@/types/auth";
 import { UserPreferenceNotFoundError } from "@/use-cases/errors/user-preference-not-found-error";
 import { makePreferencesCase } from "@/use-cases/factories/user/make-preferences";
-import { Request, Response } from "express";
+import { Response } from "express";
 import { z } from "zod";
 
-export async function preferences(request: Request, response: Response) {
-  const bodySchema = z.object({
-    userEmail: z.string().email(),
+export async function preferences(request: AuthRequest, response: Response) {
+  const authUserSchema = z.object({
+    email: z.string().email(),
   });
 
-  const { userEmail } = bodySchema.parse(request.body);
+  const { email } = authUserSchema.parse(request.user);
 
   try {
     const preferencesCase = makePreferencesCase();
 
     const {
       preferences: { communication, social },
-    } = await preferencesCase.execute({ userEmail });
+    } = await preferencesCase.execute({ userEmail: email });
 
     return response
       .status(200)

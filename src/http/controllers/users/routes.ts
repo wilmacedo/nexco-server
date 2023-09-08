@@ -1,3 +1,4 @@
+import { verifyJwt } from "@/http/middlewares/verifyJwt";
 import { Router } from "express";
 import { addCompanyType } from "./add-company-type";
 import { addInterests } from "./add-interests";
@@ -17,5 +18,5 @@ usersRouter.delete("/users/interests", removeInterests);
 usersRouter.post("/users/company-types", addCompanyType);
 usersRouter.delete("/users/company-types", removeCompanyTypes);
 
-usersRouter.post("/users/preferences", preferences);
+usersRouter.get("/users/preferences", verifyJwt, preferences);
 usersRouter.put("/users/preferences", updatePreferences);

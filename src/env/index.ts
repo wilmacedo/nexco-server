@@ -6,6 +6,12 @@ const schema = z.object({
   NODE_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
+  POSTGRES_HOST: z.string().default("localhost"),
+  POSTGRES_PORT: z.coerce.number().default(5432),
+  POSTGRES_USER: z.string().default("postgres"),
+  POSTGRES_DB: z.string().default("nexco"),
+  DATABASE_URL: z.string(),
+  JWT_SECRET: z.string(),
 });
 
 const _env = schema.safeParse(process.env);
