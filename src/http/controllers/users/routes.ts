@@ -5,6 +5,7 @@ import { preferences } from "./preferences";
 import { register } from "./register";
 import { removeCompanyTypes } from "./remove-company-type";
 import { removeInterests } from "./remove-interests";
+import { updatePreferences } from "./update-preferences";
 
 export const usersRouter = Router();
 
@@ -17,3 +18,4 @@ usersRouter.post("/users/company-types", addCompanyType);
 usersRouter.delete("/users/company-types", removeCompanyTypes);
 
 usersRouter.post("/users/preferences", preferences);
+usersRouter.put("/users/preferences", updatePreferences);

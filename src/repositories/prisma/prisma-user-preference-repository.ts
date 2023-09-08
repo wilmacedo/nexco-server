@@ -1,6 +1,9 @@
 import { prisma } from "@/lib/prisma";
 import { UserPreference } from "@prisma/client";
-import { UserPreferenceRepository } from "../UserPreferenceRepository";
+import {
+  PreferencesParams,
+  UserPreferenceRepository,
+} from "../UserPreferenceRepository";
 
 export class PrismaUserPreferenceRepository
   implements UserPreferenceRepository
@@ -13,5 +16,14 @@ export class PrismaUserPreferenceRepository
     });
 
     return preferences;
+  }
+
+  async updateByEmail(email: string, params: PreferencesParams): Promise<void> {
+    await prisma.userPreference.update({
+      where: {
+        userId: email,
+      },
+      data: params,
+    });
   }
 }
