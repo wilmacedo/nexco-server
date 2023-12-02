@@ -51,7 +51,7 @@ jobs:
           port: ${{secrets.REMOTE_PORT}}
           key: ${{secrets.SSH_PRIVATE_KEY}}
           script: |
-            cd ${{secrets.REMOTE_TARGET}}
+            cd ~${{secrets.REMOTE_TARGET}}
             pnpm install
             pnpm dlx prisma migrate deploy
             pm2 restart ${{secrets.REMOTE_APP_NAME}}
