@@ -52,6 +52,6 @@ jobs:
           key: ${{secrets.SSH_PRIVATE_KEY}}
           script: |
             cd ${{secrets.REMOTE_TARGET}}
-            yarn
-            yarn prisma migrate deploy
+            pnpm install
+            pnpm dlx prisma migrate deploy
             pm2 restart ${{secrets.REMOTE_APP_NAME}}
