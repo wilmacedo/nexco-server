@@ -1,0 +1,17 @@
+POST http://localhost:3333/users/authenticate
+Content-Type: application/json
+
+{
+  "provider": "google",
+  "email": "wil.macedo.sa@gmail.com"
+}
+
+###
+
+POST http://localhost:3333/users
+Content-Type: application/json
+
+{
+  "name": "Wil Macedo",
+  "email": "wil.macedo.sa@gmail.com"
+}
