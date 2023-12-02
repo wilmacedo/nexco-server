@@ -54,4 +54,4 @@ jobs:
             cd ${{secrets.REMOTE_TARGET}}
             pnpm install
             pnpm dlx prisma migrate deploy
-            /home/${{secrets.REMOTE_USER}}/.yarn/bin/pm2 restart ${{secrets.REMOTE_APP_NAME}}
+            pm2 restart ${{secrets.REMOTE_APP_NAME}}
