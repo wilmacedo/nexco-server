@@ -1,0 +1,57 @@
+name: Nexco Deploy - CI/CD
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: Stage
+      url: "https://api.nexco.finance"
+
+    strategy:
+      matrix:
+        node-version: [14.x]
+
+    steps:
+      - name: 📥 Checkouting...
+        uses: actions/checkout@v3
+
+      - name: ⚒️ Setuping Node.js v${{ matrix.node-version }}...
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: ⚙️ Installing dependencies...
+        run: pnpm install
+
+      - name: 🚀 Building application...
+        run: pnpm run build
+
+      - name: 📦 Deploying application...
+        uses: appleboy/scp-action@master
+        with:
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          host: ${{secrets.REMOTE_HOST}}
+          username: ${{secrets.REMOTE_USER}}
+          port: ${{secrets.REMOTE_PORT}}
+          source: "., !node_modules"
+          target: ${{secrets.REMOTE_TARGET}}
+
+      - name: 🖥️ Updating remote server...
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{secrets.REMOTE_HOST}}
+          username: ${{secrets.REMOTE_USER}}
+          port: ${{secrets.REMOTE_PORT}}
+          key: ${{secrets.SSH_PRIVATE_KEY}}
+          script: |
+            cd ${{secrets.REMOTE_TARGET}}
+            pnpm install
+            pnpm dlx prisma migrate deploy
+            /home/${{secrets.REMOTE_USER}}/.yarn/bin/pm2 restart ${{secrets.REMOTE_APP_NAME}}
