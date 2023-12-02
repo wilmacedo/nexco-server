@@ -5,9 +5,9 @@ generator client {
   provider = "prisma-client-js"
 }
 
-generator dbml {
-  provider = "prisma-dbml-generator"
-}
+// generator dbml {
+//   provider = "prisma-dbml-generator"
+// }
 
 datasource db {
   provider = "postgresql"
@@ -39,7 +39,7 @@ model UserPreference {
   social        Boolean @default(true)
 
   userId String @unique
-  user   User   @relation(fields: [userId], references: [email])
+  user   User   @relation(fields: [userId], references: [email], onDelete: Cascade)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -78,7 +78,7 @@ model UserInterest {
   id String @id @default(uuid())
 
   userId String
-  user   User   @relation(fields: [userId], references: [email])
+  user   User   @relation(fields: [userId], references: [email], onDelete: Cascade)
 
   interestId String
   interest   Interest @relation(fields: [interestId], references: [id])
@@ -93,7 +93,7 @@ model UserCompanyType {
   id String @id @default(uuid())
 
   userId String
-  user   User   @relation(fields: [userId], references: [email])
+  user   User   @relation(fields: [userId], references: [email], onDelete: Cascade)
 
   companyTypeId String
   companyType   CompanyType @relation(fields: [companyTypeId], references: [id])
