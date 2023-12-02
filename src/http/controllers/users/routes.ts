@@ -1,4 +1,4 @@
-import { verifyJwt } from "@/http/middlewares/verifyJwt";
+import { verifyJwt } from "@/http/middlewares/verify-jwt";
 import { Router } from "express";
 import { addCompanyType } from "./add-company-type";
 import { addInterests } from "./add-interests";
