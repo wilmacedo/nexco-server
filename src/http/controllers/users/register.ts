@@ -7,7 +7,7 @@ export async function register(request: Request, response: Response) {
   const registerBodySchema = z.object({
     name: z.string().min(3),
     email: z.string().email(),
-    password: z.string().optional(),
+    password: z.string().min(3).optional(),
     image: z.string().optional(),
   });
 
