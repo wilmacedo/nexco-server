@@ -9,13 +9,9 @@ export async function preferences(request: AuthRequest, response: Response) {
   try {
     const preferencesCase = makePreferencesCase();
 
-    const {
-      preferences: { communication, social },
-    } = await preferencesCase.execute({ userEmail });
+    const { preferences } = await preferencesCase.execute({ userEmail });
 
-    return response
-      .status(200)
-      .json({ preferences: { communication, social } });
+    return response.status(200).json({ preferences });
   } catch (error) {
     if (error instanceof UserPreferenceNotFoundError) {
       return response.status(404).json({ message: error.message });
