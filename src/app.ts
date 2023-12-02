@@ -1,6 +1,7 @@
 import cors from "cors";
 import express, { Response } from "express";
 import "express-async-errors";
+import morgan from "morgan";
 import { companyTypeRouter } from "./http/controllers/companyType/routes";
 import { interestsRouter } from "./http/controllers/interests/routes";
 import { usersRouter } from "./http/controllers/users/routes";
@@ -12,6 +13,7 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true, limit: "5mb" }));
 app.use(express.json({ limit: "5mb" }));
+app.use(morgan("dev"));
 
 app.use("/", usersRouter);
 app.use("/", interestsRouter);
